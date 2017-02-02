@@ -162,14 +162,14 @@ def make_better_change(change, coins=[25,10,5,1])
   end
 end
 
-# def perms_2(arr)
-#   return [arr] if arr.size == 1
-#   [[[arr[0]] + perms_2(arr[1..-1])], [perms_2(arr[1..-1]) + [arr[0]]]]
-# end
-# coins.sort
-# possible_coins = coins.select { |coin| coin <= change }
-# coin = possible_coins.max
-# (change / coin).times { results << coin }
-# results += greedy_make_change(change % coin, coins)
-# solutions << results
-# solutions
+def permutations(arr)
+  return [arr] if arr.size <= 1
+  subperms = permutations(arr[1..-1])
+  result = []
+  subperms.each do |perm|
+    (0..perm.size).each do |i|
+    result << perm[0...i] + [arr.first] + perm[i..-1]
+  end
+  end
+  result
+end
