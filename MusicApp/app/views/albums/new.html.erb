@@ -1,0 +1,19 @@
+<form class="" action="<%= albums_url %>" method="post">
+  <input
+    type="hidden"
+    name="authenticity_token"
+    value="<%= form_authenticity_token %>">
+  <input type="title" name="album[title]" value="Title of Album">
+
+  <br>
+
+  <select name = "album[band_id]">
+    <% Band.all.each do |band| %>
+      <option value="<%= band.id %>"><%= band.name %></option>
+    <% end %>
+  </select>
+
+  <br>
+
+  <input type="submit" name="" value="Enter new album">
+</form>
