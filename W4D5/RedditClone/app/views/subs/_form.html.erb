@@ -1,0 +1,22 @@
+<% if @sub.title.nil? %>
+    <% action = "" %>
+    <% url = subs_url %>
+    <% button_text = "Create a subreddit" %>
+<% else %>
+    <% action = "PATCH" %>
+    <% url = sub_url(@sub) %>
+    <% button_text = "Edit Subreddit" %>
+<% end %>
+
+<form action="<%= url %>" method="post">
+  <input type="hidden" name="_method" value="<%= action %>">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <label>Title<input type="text" name="sub[title]" value="<%= @sub.title %>"></label>
+  <input type="hidden" name="sub[user_id]" value="<%= current_user.id %>">
+
+  <br>
+
+  <label for="description">description</label>
+  <textarea name="sub[description]" id="description" rows="8" cols="80"><%= @sub.description %></textarea>
+  <input type="submit" name="" value="<%= button_text %>">
+</form>

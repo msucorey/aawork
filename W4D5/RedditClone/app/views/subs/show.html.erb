@@ -1,0 +1,23 @@
+<h2><%= @sub.title %></h2>
+<b><%= @sub.moderator.username %></b>
+<p><%= @sub.description %></p>
+
+<%= button_to "Subs index", subs_url, method: :get %>
+
+<% if current_user.subs.include?(@sub) %>
+
+<%= button_to "Edit sub", edit_sub_url(@sub), method: :get %>
+
+<% end %>
+
+<form class="" action="<%=new_post_url%>" method="get">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <input type="hidden" name="sub[id]" value="<%= @sub.id %>">
+  <input type="submit" name="" value="New post">
+</form>
+
+<ul>
+<% @sub.posts.each do |post| %>
+<li><%= link_to post.title, post_url(post) %></li>
+<% end %>
+</ul>

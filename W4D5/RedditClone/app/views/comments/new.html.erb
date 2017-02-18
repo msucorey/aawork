@@ -1,0 +1,15 @@
+
+
+<form action="<%= comments_url %>" method="post">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <input type="hidden" name="" value="">
+  <input type="text" name="" value="">
+
+  <br>
+
+  <label for="content">Content</label>
+  <textarea name="comment[content]" id="content" rows="8" cols="80">Enter your content here</textarea>
+  <input type="submit" name="" value="Submit comment">
+</form>
+
+# post, user, content, maybe a parent comment

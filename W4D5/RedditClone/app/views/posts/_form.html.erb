@@ -1,0 +1,32 @@
+<% if @post.title.nil? %>
+    <% action = "" %>
+    <% url = posts_url %>
+    <% button_text = "Create a post" %>
+<% else %>
+    <% action = "PATCH" %>
+    <% url = post_url(@post) %>
+    <% button_text = "Edit post" %>
+<% end %>
+
+<form action="<%= url %>" method="post">
+  <input type="hidden" name="_method" value="<%= action %>">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <label>Title<input type="text" name="post[title]" value="<%= @post.title %>"></label>
+
+  <br>
+  <label>Url<input type="text" name="post[url]" value="<%= @post.url %>"></label>
+
+  <input type="hidden" name="post[user_id]" value="<%= current_user.id %>">
+  <input type="hidden" name="post[sub_ids][]" value="">
+  <% Sub.all.each do |sub| %>
+    <label><%= sub.title %>
+    <input type="checkbox" name="post[sub_ids][]" value="<%= sub.id %>" <%= "checked" if @post.sub_ids.include?(sub.id) %> >
+    </label>
+  <% end %>
+
+  <br>
+
+  <label for="content">Content</label>
+  <textarea name="post[content]" id="content" rows="8" cols="80"><%= @post.content %></textarea>
+  <input type="submit" name="" value="<%= button_text %>">
+</form>
