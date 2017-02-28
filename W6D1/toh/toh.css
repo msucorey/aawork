@@ -1,0 +1,36 @@
+.hanoi {
+  width:  = 700px;
+  /*border: 20px solid black;*/
+}
+
+.empty {
+  width: 150px;
+  height: 20px;
+  background-color: white;
+}
+
+.small {
+  width: 150px;
+  height: 20px;
+  background-color: blue;
+}
+
+.medium {
+  width: 150px;
+  height: 20px;
+  background-color: green;
+}
+
+.large {
+  width: 150px;
+  height: 20px;
+  background-color: yellow;
+}
+
+
+ul.group {
+  list-style-type: none;
+  float: left;
+  /*order-style: solid;*/
+  border-bottom: thick solid black;
+}

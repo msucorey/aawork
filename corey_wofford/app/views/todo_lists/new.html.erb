@@ -1,0 +1,16 @@
+New List
+
+<form class="" action="<%= todo_lists_url  %>" method="post">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token  %>">
+
+  <label for="">Name
+    <input type="text" name="todo_list[name]" value="<%= @todolist.name  %>">
+  </label>
+
+  <label for="">Description
+    <input type="text" name="todo_list[description]" value="<%= @todolist.description  %>">
+  </label>
+
+  <input type="submit" name="" value="Create New Todo List">
+
+</form>
