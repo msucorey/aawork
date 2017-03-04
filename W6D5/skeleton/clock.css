@@ -1,0 +1,56 @@
+
+
+.time-str {
+  position: absolute;
+  top: 37px;
+  left: 18px;
+  font-size: 20px;
+  z-index: 1;
+}
+
+.time-str:hover {
+  position: absolute;
+  top: 37px;
+  left: 18px;
+  font-size: 200px;
+  z-index: 1;
+  transition-duration: 2s;
+}
+
+.date-str {
+  position: absolute;
+  top: 172px;
+  left: 47px;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.date-str:active {
+  position: absolute;
+  top: 172px;
+  left: 470px;
+  font-weight: bold;
+  z-index: 1;
+  transition-duration: 3s;
+}
+
+img {
+  position: relative;
+  width: 400px;
+  height: auto;
+}
+
+img:hover {
+  position: relative;
+  width: 4000px;
+  height: auto;
+  transition-duration: 1s;
+}
+
+img:active {
+  display: none;
+  position: relative;
+  width: 4000px;
+  height: auto;
+  transition-duration: 1s;
+}
