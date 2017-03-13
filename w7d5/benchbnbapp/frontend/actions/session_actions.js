@@ -1,34 +1,24 @@
 import * as APIUtil from '../util/session_api_util';
 
-export const RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER';
-export const LOGOUT_USER = 'LOGOUT_USER';
-export const RECEIVE_ERRORS = 'RECEIVE_ERRORS';
-export const RECEIVE_LOGOUT_SUCCESS = 'RECEIVE_LOGOUT_SUCCESS';
+export const RECEIVE_CURRENT_USER = "RECEIVE_CURRENT_USER";
+export const RECEIVE_ERRORS = "RECEIVE_ERRORS";
 
-//async actions
-export const requestSignup = user => dispatch => {
-  return APIUtil.newUser(user).then(
-    currentUser => dispatch(receiveCurrentUser(currentUser))
-  ).fail(
-    error => dispatch(receiveErrors(error.responseJSON))
-  );
-};
+export const signup = user => dispatch => (
+  APIUtil.signup(user)
+    .then(user => dispatch(receiveCurrentUser(user)),
+      err => dispatch(receiveErrors(err.responseJSON)))
+);
 
-export const requestLogin = user => dispatch => {
-  return APIUtil.newSession(user).then(
-    currentUser => dispatch(receiveCurrentUser(currentUser))
-  ).fail(
-    error => dispatch(receiveErrors(error.responseJSON))
-  );
-};
+export const login = user => dispatch => (
+  APIUtil.login(user)
+    .then(user => dispatch(receiveCurrentUser(user)),
+      err => dispatch(receiveErrors(err.responseJSON)))
+);
 
-export const requestLogout = () => dispatch => {
-  return APIUtil.deleteSession().then(
-    () => dispatch(receiveLogoutSuccess())
-  );
-};
+export const logout = () => dispatch => (
+  APIUtil.logout().then(user => dispatch(receiveCurrentUser(null)))
+);
 
-//sync actions
 export const receiveCurrentUser = currentUser => ({
   type: RECEIVE_CURRENT_USER,
   currentUser
@@ -39,9 +29,6 @@ export const receiveErrors = errors => ({
   errors
 });
 
-export const receiveLogoutSuccess = () => ({
-  type: RECEIVE_LOGOUT_SUCCESS
-});
 
 // Before we get to the reducer, let's write and export the following action creators in a new file actions/session_actions.js:
 //

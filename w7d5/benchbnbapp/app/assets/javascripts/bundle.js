@@ -9436,32 +9436,32 @@ module.exports = ReactPropTypesSecret;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var newUser = exports.newUser = function newUser(user) {
-  return $.ajax({
-    method: 'POST',
-    url: '/api/users',
-    data: { user: user }
-  });
-};
+exports.logout = exports.signup = exports.login = undefined;
 
-var newSession = exports.newSession = function newSession(user) {
+var _session_actions = __webpack_require__(188);
+
+var login = exports.login = function login(user) {
   return $.ajax({
     method: 'POST',
     url: '/api/session',
-    data: { user: user }
+    data: user
   });
 };
 
-var deleteSession = exports.deleteSession = function deleteSession() {
+var signup = exports.signup = function signup(user) {
   return $.ajax({
-    method: 'DELETE',
+    method: 'POST',
+    url: '/api/user',
+    data: user
+  });
+};
+
+var logout = exports.logout = function logout() {
+  return $.ajax({
+    method: 'delete',
     url: '/api/session'
   });
 };
-
-// signup: should make an AJAX request that creates a new user.
-// login: should make an AJAX request that creates a new session.
-// logout: should make an AJAX request that deletes the current session.
 
 /***/ }),
 /* 80 */
@@ -21732,14 +21732,22 @@ var _store = __webpack_require__(187);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _root = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/root\""); e.code = 'MODULE_NOT_FOUND';; throw e; }()));
+var _root = __webpack_require__(220);
 
 var _root2 = _interopRequireDefault(_root);
+
+var _session_actions = __webpack_require__(188);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 document.addEventListener('DOMContentLoaded', function () {
-  var store = (0, _store2.default)();
+  var store = void 0;
+  if (window.currentUser) {
+    var preloadedState = { session: { currentUser: window.currentUser } };
+    store = (0, _store2.default)(preloadedState);
+  } else {
+    store = (0, _store2.default)();
+  }
   var root = document.getElementById('root');
   _reactDom2.default.render(_react2.default.createElement(_root2.default, { store: store }), root);
 });
@@ -22290,7 +22298,7 @@ exports.default = configureStore;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.receiveLogoutSuccess = exports.receiveErrors = exports.receiveCurrentUser = exports.requestLogout = exports.requestLogin = exports.requestSignup = exports.RECEIVE_LOGOUT_SUCCESS = exports.RECEIVE_ERRORS = exports.LOGOUT_USER = exports.RECEIVE_CURRENT_USER = undefined;
+exports.receiveErrors = exports.receiveCurrentUser = exports.logout = exports.login = exports.signup = exports.RECEIVE_ERRORS = exports.RECEIVE_CURRENT_USER = undefined;
 
 var _session_api_util = __webpack_require__(79);
 
@@ -22298,41 +22306,37 @@ var APIUtil = _interopRequireWildcard(_session_api_util);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var RECEIVE_CURRENT_USER = exports.RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER';
-var LOGOUT_USER = exports.LOGOUT_USER = 'LOGOUT_USER';
-var RECEIVE_ERRORS = exports.RECEIVE_ERRORS = 'RECEIVE_ERRORS';
-var RECEIVE_LOGOUT_SUCCESS = exports.RECEIVE_LOGOUT_SUCCESS = 'RECEIVE_LOGOUT_SUCCESS';
+var RECEIVE_CURRENT_USER = exports.RECEIVE_CURRENT_USER = "RECEIVE_CURRENT_USER";
+var RECEIVE_ERRORS = exports.RECEIVE_ERRORS = "RECEIVE_ERRORS";
 
-//async actions
-var requestSignup = exports.requestSignup = function requestSignup(user) {
+var signup = exports.signup = function signup(user) {
   return function (dispatch) {
-    return APIUtil.newUser(user).then(function (currentUser) {
-      return dispatch(receiveCurrentUser(currentUser));
-    }).fail(function (error) {
-      return dispatch(receiveErrors(error.responseJSON));
+    return APIUtil.signup(user).then(function (user) {
+      return dispatch(receiveCurrentUser(user));
+    }, function (err) {
+      return dispatch(receiveErrors(err.responseJSON));
     });
   };
 };
 
-var requestLogin = exports.requestLogin = function requestLogin(user) {
+var login = exports.login = function login(user) {
   return function (dispatch) {
-    return APIUtil.newSession(user).then(function (currentUser) {
-      return dispatch(receiveCurrentUser(currentUser));
-    }).fail(function (error) {
-      return dispatch(receiveErrors(error.responseJSON));
+    return APIUtil.login(user).then(function (user) {
+      return dispatch(receiveCurrentUser(user));
+    }, function (err) {
+      return dispatch(receiveErrors(err.responseJSON));
     });
   };
 };
 
-var requestLogout = exports.requestLogout = function requestLogout() {
+var logout = exports.logout = function logout() {
   return function (dispatch) {
-    return APIUtil.deleteSession().then(function () {
-      return dispatch(receiveLogoutSuccess());
+    return APIUtil.logout().then(function (user) {
+      return dispatch(receiveCurrentUser(null));
     });
   };
 };
 
-//sync actions
 var receiveCurrentUser = exports.receiveCurrentUser = function receiveCurrentUser(currentUser) {
   return {
     type: RECEIVE_CURRENT_USER,
@@ -22344,12 +22348,6 @@ var receiveErrors = exports.receiveErrors = function receiveErrors(errors) {
   return {
     type: RECEIVE_ERRORS,
     errors: errors
-  };
-};
-
-var receiveLogoutSuccess = exports.receiveLogoutSuccess = function receiveLogoutSuccess() {
-  return {
-    type: RECEIVE_LOGOUT_SUCCESS
   };
 };
 
@@ -40104,6 +40102,25 @@ function symbolObservablePonyfill(root) {
 
 	return result;
 };
+
+/***/ }),
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */
+/***/ (function(module, exports) {
+
+throw new Error("Module build failed: SyntaxError: Unexpected token (12:2)\n\n\u001b[0m \u001b[90m 10 | \u001b[39m\u001b[36mconst\u001b[39m \u001b[33mRoot\u001b[39m \u001b[33m=\u001b[39m ({ store }) \u001b[33m=>\u001b[39m (\n \u001b[90m 11 | \u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 12 | \u001b[39m  \u001b[36mconst\u001b[39m _redirectIfLoggedIn \u001b[33m=\u001b[39m (nextState\u001b[33m,\u001b[39m replace) \u001b[33m=>\u001b[39m {\n \u001b[90m    | \u001b[39m  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 13 | \u001b[39m    \u001b[36mconst\u001b[39m currentUser \u001b[33m=\u001b[39m store\u001b[33m.\u001b[39mgetState()\u001b[33m.\u001b[39msession\u001b[33m.\u001b[39mcurrentUser\u001b[33m;\u001b[39m\n \u001b[90m 14 | \u001b[39m    \u001b[36mif\u001b[39m (currentUser) {\n \u001b[90m 15 | \u001b[39m      replace(\u001b[32m'/'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n");
 
 /***/ })
 /******/ ]);
