@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
 
   private
   def current_user
+    puts "looking for current user"
     @current_user ||= User.find_by_session_token(session[:session_token])
   end
 
@@ -26,5 +27,5 @@ class ApplicationController < ActionController::Base
   def require_signed_in!
     redirect_to new_session_url unless signed_in?
   end
-  
+
 end
